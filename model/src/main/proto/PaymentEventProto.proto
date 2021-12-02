@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ru.on8off.kafka.model.proto;
+
+message PaymentEventProto {
+  int64 timestamp = 1;
+  int64 customerId =2;
+  EventTypeProto eventType =3;
+
+  enum EventTypeProto {
+      PaymentPageOpened=0;
+      PaymentTypeSelected=1;
+      PaymentDataFilled=2;
+      PaymentSucceed=3;
+      PaymentFailed=4;
+  }
+}

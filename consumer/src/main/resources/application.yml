@@ -1,0 +1,14 @@
+bootstrap-servers: "localhost:9092"
+replications: 1
+schema-registry: "http://localhost:8081"
+partitions: 5
+topic:
+  avro: paymentEventsAvroTopic
+  proto: paymentEventsProtoTopic
+  json: paymentEventsJSONTopic
+group:
+  avro: group-avro
+  proto: group-proto
+  json: group-json
+
+logging.level.root: INFO
