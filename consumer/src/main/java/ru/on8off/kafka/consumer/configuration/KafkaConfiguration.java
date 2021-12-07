@@ -40,18 +40,11 @@ public class KafkaConfiguration {
     private Integer partitions;
     @Value("${replications}")
     private Short replications;
-    @Value("${group.avro}")
-    private String groupIdAvro;
-    @Value("${group.proto}")
-    private String groupIdProto;
-    @Value("${group.json}")
-    private String groupIdJson;
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<Long, PaymentEventAvro> avroListenerContainerFactory() {
         var properties = getCommonConfig();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdAvro);
         properties.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
         var factory = new ConcurrentKafkaListenerContainerFactory<Long, PaymentEventAvro> ();
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(properties));
@@ -62,7 +55,6 @@ public class KafkaConfiguration {
     public ConcurrentKafkaListenerContainerFactory<Long, PaymentEventProtoOuterClass.PaymentEventProto> protoListenerContainerFactory() {
         var properties = getCommonConfig();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaProtobufDeserializer.class);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdProto);
         properties.put(KafkaProtobufDeserializerConfig.SPECIFIC_PROTOBUF_VALUE_TYPE, PaymentEventProtoOuterClass.PaymentEventProto.class);
         var factory = new ConcurrentKafkaListenerContainerFactory<Long, PaymentEventProtoOuterClass.PaymentEventProto> ();
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(properties));
@@ -73,7 +65,6 @@ public class KafkaConfiguration {
     public ConcurrentKafkaListenerContainerFactory<Long, PaymentEventJson> jsonListenerContainerFactory() {
         var properties = getCommonConfig();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaJsonDeserializer.class);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdJson);
         properties.put(KafkaJsonDeserializerConfig.JSON_VALUE_TYPE, PaymentEventJson.class);
         var factory = new ConcurrentKafkaListenerContainerFactory<Long, PaymentEventJson> ();
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(properties));
