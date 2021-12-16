@@ -12,6 +12,12 @@ mvn verify -Ddocker_host=localhost -f consumer/pom.xml
 mvn docker:run -Ddocker_host=localhost -f producer/pom.xml
 ```
 
+## Run Kafka Cluster
+```
+cd kafka-cluster/
+docker-compose up -d
+```
+
 ## Run applications
 ```
 mvn spring-boot:run -Ddocker_host=localhost -f producer/pom.xml
