@@ -8,6 +8,7 @@ import io.confluent.kafka.serializers.subject.RecordNameStrategy;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import ru.on8off.kafka.model.json.PaymentEventJson;
 import ru.on8off.kafka.model.proto.PaymentEventProtoOuterClass;
 
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,7 +88,10 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic topicAvro() {
-        return new NewTopic(topicAvro, partitions, replications);
+        var topicConfig = Map.of(
+                TopicConfig.RETENTION_MS_CONFIG, String.valueOf(Duration.ofHours(24).toMillis())
+        );
+        return new NewTopic(topicAvro, partitions, replications).configs(topicConfig);
     }
     @Bean
     public NewTopic topicProto() {
